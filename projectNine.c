@@ -264,7 +264,7 @@ void status_report()
 {
     temp = head;
     printf("avaliable space left: %d\n", head->available_space);
-    while (temp->next != NULL)
+    while (temp->next != NULL)  
     {
         printf("Addresses [%d : %d] Process %s\n", temp->next->start_address, temp->next->end_address, temp->next->process_id);
         temp = temp->next;
