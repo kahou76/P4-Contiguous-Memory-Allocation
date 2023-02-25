@@ -202,6 +202,8 @@ void allocate(int length, char *args[]){
     else if(strcmp(args[3], "W") == 0){
         //Worst fit
         worstFit(args[1],atoi(args[2]));
+    }else{
+        printf("WHY: %s\n", args[3]);
     }
 }
 
@@ -233,19 +235,21 @@ void readFile(char* file){
     char *args[MAX_LINE/2 + 1];
 
     in = fopen(file, "r");
-    //printf("HERE\n");
     while(fgets(task,SIZE,in) != NULL){
+        // Remove newline character
+        task[strcspn(task, "\n")] = '\0';
+
         //process each row
-        //printf("NOW\n");
         temp = strdup(task);
         //print out the input first
         printf("enter>%s\n", temp);
         //then execute it
         int length = tokenFunction(temp, args);
-        // args[length] = NULL; // Add NULL terminator
         executeCommand(length, args);
     }
+    fclose(in);
 }
+
 
 void executeCommand(int length, char *args[]){
     printf("Executing!!!\n");
