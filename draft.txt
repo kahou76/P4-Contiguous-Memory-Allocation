@@ -9,8 +9,4 @@ F X
 S
 A E 25 F
 A F 15 F
-A G 3 B
-A H 1 W
 S
-C
-E

@@ -18,6 +18,7 @@ struct node *newNode = NULL;
 int takeInput(char input[]);
 void printList();
 void firstFit(char *name, int space);
+void executeCommand(int length, char *args[]);
 
 
 //function to take user input
@@ -54,31 +55,39 @@ int tokenFunction(char input[], char *args[]){
 
 void printList(){
     struct node *curr = head;
+    int count = 0;
     while(curr != NULL){
-        
+        count++;
         int currSize = curr->task->availableSpace;
-        
-        printf("CURR NODE: %s %d", curr->task->letter, currSize);
+        //printf("CURR NODE: %s %d\n", curr->task->letter, currSize);
         while(currSize-->0){
             printf("%s",curr->task->letter);
         }
+        //printf("\n");
         curr = curr->next;
     }
     printf("\n");
+    printf("COUNT: %d\n", count);
 }
+
+void makeHead(char *name, int space){
+    newNode = malloc(sizeof(struct node));
+    newNode->task = malloc(sizeof(struct task));
+    newNode->task->letter = malloc(strlen(name) + 1); // allocate new memory
+    strcpy(newNode->task->letter, name); // copy the value of name to the new memory
+    newNode->task->availableSpace = space;
+    head->task->availableSpace -= space;
+    newNode->next = head;
+    head = newNode;
+}
+
 
 void firstFit(char *name, int space){
     printf("DOING FIRST FIT %s  %d\n", name, space);
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
-        newNode = malloc(sizeof(struct node));
-        newNode->task = malloc(sizeof(struct task));
-        newNode->task->letter = name;
-        newNode->task->availableSpace = space;
-        head->task->availableSpace -= space;
-        newNode->next = head;
-        head = newNode;
+        makeHead(name, space);
     }else{
         //insert it between tail
         struct node * curr = head;
@@ -86,11 +95,12 @@ void firstFit(char *name, int space){
             if(strcmp(curr->next->task->letter, ".") == 0 && curr->next->task->availableSpace >= space){
                 newNode = malloc(sizeof(struct node));
                 newNode->task = malloc(sizeof(struct task));
-                newNode->task->letter = name;
+                newNode->task->letter = malloc(strlen(name) + 1); // allocate new memory
+                strcpy(newNode->task->letter, name); // copy the value of name to the new memory
                 newNode->task->availableSpace = space;
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
-                curr->next = newNode->next;
+                curr->next = newNode;
                 printf("DONE\n");
                 break;
             }
@@ -98,46 +108,22 @@ void firstFit(char *name, int space){
         }
     }
 
-    //print it out
-    struct node *curr = head;
-    int count = 0;
-    while(curr != NULL){
-        count++;
-        int currSize = curr->task->availableSpace;
-        char *currName = curr->task->letter;
-        printf("CURR NODE: %s %d\n", currName, currSize);
-        while(currSize-->0){
-            printf("%s",currName);
-        }
-        printf("\n");
-        curr = curr->next;
-    }
-    printf("\n");
-    printf("COUNT: %d\n", count);
-
-
-
 }
+
 
 void bestFit(char *name, int space){
     printf("DOING BEST FIT %s  %d\n", name, space);
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
-        newNode = malloc(sizeof(struct node));
-        newNode->task = malloc(sizeof(struct task));
-        newNode->task->letter = name;
-        newNode->task->availableSpace = space;
-        head->task->availableSpace -= space;
-        newNode->next = head;
-        head = newNode;
+        makeHead(name, space);
     }
     else{
         //find the closet first
         int min = 80;
         struct node* curr = head;
         while( curr != NULL){
-            if(strcmp(curr->task->letter, ".") == 0 && curr->task->availableSpace < min && min >= space){
+            if(strcmp(curr->task->letter, ".") == 0 && curr->task->availableSpace < min && curr->task->availableSpace >= space){
                 min = curr->task->availableSpace;
             }
             curr = curr->next;
@@ -148,11 +134,12 @@ void bestFit(char *name, int space){
             if(strcmp(curr->next->task->letter, ".") == 0 && curr->next->task->availableSpace == min){
                 newNode = malloc(sizeof(struct node));
                 newNode->task = malloc(sizeof(struct task));
-                newNode->task->letter = name;
+                newNode->task->letter = malloc(strlen(name) + 1); // allocate new memory
+                strcpy(newNode->task->letter, name); // copy the value of name to the new memory
                 newNode->task->availableSpace = space;
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
-                curr->next = newNode->next;
+                curr->next = newNode;
                 printf("BEST FIT DONE\n");
                 break;
             }
@@ -167,20 +154,14 @@ void worstFit(char *name, int space){
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
-        newNode = malloc(sizeof(struct node));
-        newNode->task = malloc(sizeof(struct task));
-        newNode->task->letter = name;
-        newNode->task->availableSpace = space;
-        head->task->availableSpace -= space;
-        newNode->next = head;
-        head = newNode;
+       makeHead(name, space);
     }
     else{
         //find the max first
         int max = 0;
         struct node* curr = head;
         while( curr != NULL){
-            if(strcmp(curr->task->letter, ".") == 0 && max < curr->task->availableSpace && max >= space){
+            if(strcmp(curr->task->letter, ".") == 0 && max < curr->task->availableSpace && curr->task->availableSpace >= space){
                 max = curr->task->availableSpace;
             }
             curr = curr->next;
@@ -191,11 +172,12 @@ void worstFit(char *name, int space){
             if(strcmp(curr->next->task->letter, ".") == 0 && curr->next->task->availableSpace == max){
                 newNode = malloc(sizeof(struct node));
                 newNode->task = malloc(sizeof(struct task));
-                newNode->task->letter = name;
+                newNode->task->letter = malloc(strlen(name) + 1); // allocate new memory
+                strcpy(newNode->task->letter, name); // copy the value of name to the new memory
                 newNode->task->availableSpace = space;
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
-                curr->next = newNode->next;
+                curr->next = newNode;
                 printf("WORST FIT DONE\n");
                 break;
             }
@@ -206,16 +188,18 @@ void worstFit(char *name, int space){
 } 
 
 void allocate(int length, char *args[]){
+    printf("HERE %s\n", args[3]);
     if(strcmp(args[3], "F") == 0){
         //First fit
+        printf("Running firstFit!!! %s\n", args[0]);
         firstFit(args[1],atoi(args[2]));
         
     }
-    else if(args[3] == "B"){
+    else if(strcmp(args[3], "B") == 0){
         //Best fit
         bestFit(args[1],atoi(args[2]));
     }
-    else if(args[3] == "W"){
+    else if(strcmp(args[3], "W") == 0){
         //Worst fit
         worstFit(args[1],atoi(args[2]));
     }
@@ -238,6 +222,7 @@ void compactList(){
             tail->task->availableSpace += curr->next->task->availableSpace;
             curr->next = curr->next->next;
         }
+        curr = curr->next;
     }
 }
 
@@ -248,21 +233,25 @@ void readFile(char* file){
     char *args[MAX_LINE/2 + 1];
 
     in = fopen(file, "r");
+    //printf("HERE\n");
     while(fgets(task,SIZE,in) != NULL){
         //process each row
+        //printf("NOW\n");
         temp = strdup(task);
         //print out the input first
         printf("enter>%s\n", temp);
         //then execute it
         int length = tokenFunction(temp, args);
+        // args[length] = NULL; // Add NULL terminator
         executeCommand(length, args);
     }
 }
 
 void executeCommand(int length, char *args[]){
-
+    printf("Executing!!!\n");
     if(strcmp(args[0], "A") == 0){
         //allocation
+        printf("Running allocation!!!\n");
         allocate(length, args);
     }
 
