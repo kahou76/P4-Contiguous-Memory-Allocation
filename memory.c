@@ -5,7 +5,6 @@
 
 #include "task.h"
 #include "list.h"
-// #include "allocation_ff.h"
 
 #define SIZE    100
 #define MAX_LINE 80 /* The maximum length command */
@@ -67,7 +66,7 @@ void printList(){
         curr = curr->next;
     }
     printf("\n");
-    printf("COUNT: %d\n", count);
+    //printf("COUNT: %d\n", count);
 }
 
 void makeHead(char *name, int space){
@@ -83,7 +82,7 @@ void makeHead(char *name, int space){
 
 
 void firstFit(char *name, int space){
-    printf("DOING FIRST FIT %s  %d\n", name, space);
+    //printf("DOING FIRST FIT %s  %d\n", name, space);
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
@@ -101,7 +100,7 @@ void firstFit(char *name, int space){
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
                 curr->next = newNode;
-                printf("DONE\n");
+                //printf("DONE\n");
                 break;
             }
             curr = curr->next;
@@ -112,7 +111,7 @@ void firstFit(char *name, int space){
 
 
 void bestFit(char *name, int space){
-    printf("DOING BEST FIT %s  %d\n", name, space);
+    //printf("DOING BEST FIT %s  %d\n", name, space);
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
@@ -140,7 +139,7 @@ void bestFit(char *name, int space){
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
                 curr->next = newNode;
-                printf("BEST FIT DONE\n");
+                //printf("BEST FIT DONE\n");
                 break;
             }
             curr = curr->next;
@@ -150,7 +149,7 @@ void bestFit(char *name, int space){
 }
 
 void worstFit(char *name, int space){
-    printf("DOING WORST FIT %s  %d\n", name, space);
+    //printf("DOING WORST FIT %s  %d\n", name, space);
 
     //if head is . && space is 80
     if(strcmp(head->task->letter, ".") == 0 && head->task->availableSpace == 80){
@@ -178,7 +177,7 @@ void worstFit(char *name, int space){
                 curr->next->task->availableSpace -= space;
                 newNode->next = curr->next;
                 curr->next = newNode;
-                printf("WORST FIT DONE\n");
+                //printf("WORST FIT DONE\n");
                 break;
             }
             curr = curr->next;
@@ -188,10 +187,10 @@ void worstFit(char *name, int space){
 } 
 
 void allocate(int length, char *args[]){
-    printf("HERE %s\n", args[3]);
+    //printf("HERE %s\n", args[3]);
     if(strcmp(args[3], "F") == 0){
         //First fit
-        printf("Running firstFit!!! %s\n", args[0]);
+        //printf("Running firstFit!!! %s\n", args[0]);
         firstFit(args[1],atoi(args[2]));
         
     }
@@ -202,8 +201,6 @@ void allocate(int length, char *args[]){
     else if(strcmp(args[3], "W") == 0){
         //Worst fit
         worstFit(args[1],atoi(args[2]));
-    }else{
-        printf("WHY: %s\n", args[3]);
     }
 }
 
@@ -246,16 +243,19 @@ void readFile(char* file){
         //then execute it
         int length = tokenFunction(temp, args);
         executeCommand(length, args);
+        if(should_run == -1){
+            break;
+        }
     }
     fclose(in);
 }
 
 
 void executeCommand(int length, char *args[]){
-    printf("Executing!!!\n");
+    //printf("Executing!!!\n");
     if(strcmp(args[0], "A") == 0){
         //allocation
-        printf("Running allocation!!!\n");
+        //printf("Running allocation!!!\n");
         allocate(length, args);
     }
 
@@ -281,7 +281,7 @@ void executeCommand(int length, char *args[]){
 
     if(strcmp(args[0], "E") == 0){
         //Exit
-        should_run = -1;
+        exit(0);
     }
 
 }

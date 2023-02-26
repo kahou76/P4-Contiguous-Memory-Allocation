@@ -1,0 +1,19 @@
+enter>R script.txt
+enter>A A 10 F
+enter>A X 10 F
+enter>A B 10 F
+enter>A X 20 F
+enter>A C 5 F
+enter>A X 15 F
+enter>A D 5 F
+enter>F X
+enter>S
+AAAAAAAAAA..........BBBBBBBBBB....................CCCCC...............DDDDD.....
+enter>A E 25 F
+enter>A F 15 F
+enter>A G 3 B
+enter>A H 1 W
+enter>S
+AAAAAAAAAA..........BBBBBBBBBBFFFFFFFFFFFFFFFGGG..CCCCCH..............DDDDD.....
+enter>C
+enter>E
